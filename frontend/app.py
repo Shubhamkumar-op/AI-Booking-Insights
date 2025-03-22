@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-backend_url = "https://your-fastapi-app.onrender.com"
+backend_url = "https://ai-booking-insights.onrender.com"
 
 st.title("Hotel Booking Analytics & QA System")
 
