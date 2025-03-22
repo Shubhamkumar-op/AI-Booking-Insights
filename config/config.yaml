@@ -1,0 +1,17 @@
+database:
+  path: "hotel_bookings.db"  
+api:
+  backend_url: "https://your-fastapi-app.onrender.com"  
+  streamlit_url: "https://your-streamlit-app.streamlit.app"  
+
+faiss:
+  model_name: "all-MiniLM-L6-v2"  
+  num_neighbors: 5  
+
+llm:
+  provider: "groq"  
+  model: "mixtral-8x7b-32768"  
+
+logging:
+  level: "INFO"  
+  log_file: "logs/app.log"  

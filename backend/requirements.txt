@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pandas
+numpy
+faiss-cpu
+sentence-transformers
+langchain
+requests
+python-dotenv
+uvicorn
