@@ -3,9 +3,12 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer
 from huggingface_hub import login
 from config import HUGGINGFACE_API_KEY, FAISS_MODEL, FAISS_NUM_NEIGHBORS
+import os
+import pandas as pd
 
-data_url = "https://raw.githubusercontent.com/Shubhamkumar-op/AI-Booking-Insights/refs/heads/main/data/hotel_bookings.csv"
-df = pd.read_csv(data_url)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+csv_path = os.path.join(BASE_DIR, "data/hotel_bookings.csv")
+df = pd.read_csv(csv_path, usecols=["hotel", "arrival_date_year", "adr"], nrows=5000)  # Load fewer rows
 
 
 
