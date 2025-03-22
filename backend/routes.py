@@ -1,8 +1,8 @@
 from fastapi import APIRouter
-from backend.analytics import revenue_trends, cancellation_rate, geo_distribution, booking_lead_time
-from backend.faiss_index import query_faiss
-from backend.llm import query_llm
-from backend.models import QueryRequest, BookingAnalyticsResponse, QAResponse
+from analytics import revenue_trends, cancellation_rate, geo_distribution, booking_lead_time
+from faiss_index import query_faiss
+from llm import query_llm
+from models import QueryRequest, BookingAnalyticsResponse, QAResponse
 
 router = APIRouter()
 

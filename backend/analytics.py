@@ -1,4 +1,4 @@
-from backend.database import get_sql_data
+from database import get_sql_data
 
 def revenue_trends():
     return get_sql_data("SELECT strftime('%Y-%m', arrival_date), SUM(adr * stays_in_week_nights) FROM bookings GROUP BY 1")

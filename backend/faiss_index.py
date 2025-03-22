@@ -2,7 +2,7 @@ import faiss
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 from huggingface_hub import login
-from backend.config import HUGGINGFACE_API_KEY, FAISS_MODEL, FAISS_NUM_NEIGHBORS
+from config import HUGGINGFACE_API_KEY, FAISS_MODEL, FAISS_NUM_NEIGHBORS
 
 df = pd.read_csv("data/hotel_bookings.csv")
 
