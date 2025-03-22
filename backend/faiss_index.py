@@ -4,12 +4,12 @@ from sentence_transformers import SentenceTransformer
 from huggingface_hub import login
 from config import HUGGINGFACE_API_KEY, FAISS_MODEL, FAISS_NUM_NEIGHBORS
 
-df = pd.read_csv("data/hotel_bookings.csv")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
+csv_path = os.path.join(BASE_DIR, "data/hotel_bookings.csv")
 
-# Authenticate Hugging Face API Key
+
 login(HUGGINGFACE_API_KEY)
 
-# Initialize FAISS model
 model = SentenceTransformer(FAISS_MODEL)
 
 embeddings = model.encode(df['hotel'].astype(str).tolist(), convert_to_numpy=True)
