@@ -1,56 +1,66 @@
+# import sqlite3
+# import os
+
+
+# DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "hotel_bookings.csv")
+
+# def get_sql_data(query):
+#     try:
+#         with sqlite3.connect(DB_PATH) as conn:
+#             cursor = conn.cursor()
+#             cursor.execute(query)
+#             result = cursor.fetchall()
+#             logging.info(f"Successfully executed query: {query}")
+#             return result
+#     except sqlite3.Error as e:
+#         logging.error(f"Failed to execute query: {query}. Error: {e}")
+#         return []
+
+# def revenue_trends():
+#     query = "SELECT strftime('%Y-%m', arrival_date), SUM(adr * stays_in_week_nights) FROM bookings GROUP BY 1"
+#     result = get_sql_data(query)
+#     logging.info(f"Retrieved revenue trends data")
+#     return {row[0]: row[1] for row in result} if result else {}
+
+# def cancellation_rate():
+#     query = "SELECT AVG(is_canceled) * 100 FROM bookings"
+#     result = get_sql_data(query)
+#     logging.info(f"Retrieved cancellation rate data")
+#     return float(result[0][0]) if result and result[0][0] is not None else 0.0
+
+# def geo_distribution():
+#     query = "SELECT country, COUNT(*) FROM bookings GROUP BY country"
+#     result = get_sql_data(query)
+#     logging.info(f"Retrieved geo distribution data")
+#     return {row[0]: row[1] for row in result} if result else {}
+
+# def booking_lead_time():
+#     query = "SELECT AVG(lead_time), MIN(lead_time), MAX(lead_time) FROM bookings"
+#     result = get_sql_data(query)
+#     logging.info(f"Retrieved booking lead time data")
+#     avg_lead, min_lead, max_lead = result[0] if result and result[0] is not None else (0, 0, 0)
+#     return {"average_lead_time": avg_lead, "minimum_lead_time": min_lead, "maximum_lead_time": max_lead}
+
 import pandas as pd
-import numpy as np
+import os
 
-filrpath=data_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "bookings_data.csv")
+CSV_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "hotel_bookings.csv")
+df = pd.read_csv(CSV_PATH)
 
-def load_data(filepath):
-    try:
-        df = pd.read_csv(filepath)
-        df.dropna(inplace=True)
-        return df
-    except Exception as e:
-        print(f"Error loading data: {e}")
-        return pd.DataFrame() 
+def revenue_trends():
+    df["arrival_date"] = pd.to_datetime(df["arrival_date_year"].astype(str) + "-" + df["arrival_date_month"])
+    trends = df.groupby(df["arrival_date"].dt.to_period("M")).apply(lambda x: (x["adr"] * x["stays_in_week_nights"]).sum()).to_dict()
+    return trends
 
+def cancellation_rate():
+    return df["is_canceled"].mean() * 100
 
-def revenue_trends(df):
-    try:
-        df['arrival_date'] = pd.to_datetime(df['arrival_date'], errors='coerce')
-        df['month_year'] = df['arrival_date'].dt.to_period('M')
-        df['revenue'] = df['adr'] * df['stays_in_week_nights']
-        revenue_data = df.groupby('month_year')['revenue'].sum().reset_index()
+def geo_distribution():
+    return df["country"].value_counts().to_dict() 
 
-        return revenue_data.set_index('month_year')['revenue'].to_dict() 
-        print(f"Error calculating revenue trends: {e}")
-        return {}
-
-def cancellation_rate(df):
-    try:
-        cancellation_rate = (df['is_canceled'].mean()) * 100 
-        return cancellation_rate
-    except Exception as e:
-        print(f"Error calculating cancellation rate: {e}")
-        return 0.0
-
-def geo_distribution(df):
-    try:
-        geo_data = df.groupby('country').size().reset_index(name='bookings_count')
-        return geo_data.set_index('country')['bookings_count'].to_dict() 
-    except Exception as e:
-        print(f"Error calculating geo distribution: {e}")
-        return {}
-
-def booking_lead_time(df):
-    try:
-        avg_lead_time = df['lead_time'].mean()
-        min_lead_time = df['lead_time'].min()
-        max_lead_time = df['lead_time'].max()
-
-        return {
-            "average_lead_time": avg_lead_time,
-            "minimum_lead_time": min_lead_time,
-            "maximum_lead_time": max_lead_time
-        }
-    except Exception as e:
-        print(f"Error calculating booking lead time: {e}")
-        return {"average_lead_time": 0, "minimum_lead_time": 0, "maximum_lead_time": 0}
+def booking_lead_time():
+    return {
+        "average_lead_time": df["lead_time"].mean(),
+        "minimum_lead_time": df["lead_time"].min(),
+        "maximum_lead_time": df["lead_time"].max(),
+    }
