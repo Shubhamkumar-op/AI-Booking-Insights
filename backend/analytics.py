@@ -10,4 +10,11 @@ def geo_distribution():
     return dict(get_sql_data("SELECT country, COUNT(*) FROM bookings GROUP BY country"))
 
 def booking_lead_time():
-    return dict(get_sql_data("SELECT AVG(lead_time), MIN(lead_time), MAX(lead_time) FROM bookings"))
+    result = get_sql_data("SELECT AVG(lead_time), MIN(lead_time), MAX(lead_time) FROM bookings")
+    avg_lead, min_lead, max_lead = result[0]
+    return {
+        "average_lead_time": avg_lead,
+        "minimum_lead_time": min_lead,
+        "maximum_lead_time": max_lead
+    }
+
