@@ -85,39 +85,3 @@ def booking_lead_time(df):
     logging.info("Retrieved booking lead time data")
     return lead_time_data
 
-def main():
-    df = load_data()
-    if not df.empty:
-        revenue_trends_data = revenue_trends(df)
-        cancellation_rate_data = cancellation_rate(df)
-        geo_distribution_data = geo_distribution(df)
-        booking_lead_time_data = booking_lead_time(df)
-        # Use the retrieved data as needed
-        print(revenue_trends_data)
-        print(cancellation_rate_data)
-        print(geo_distribution_data)
-        print(booking_lead_time_data)
-
-if __name__ == "__main__":
-    main()
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CSV_PATH = os.path.join(BASE_DIR, "data", "hotel_bookings.csv")
-df = pd.read_csv(CSV_PATH)
-
-def revenue_trends():
-    df["arrival_date"] = pd.to_datetime(df["arrival_date_year"].astype(str) + "-" + df["arrival_date_month"])
-    trends = df.groupby(df["arrival_date"].dt.to_period("M")).apply(lambda x: (x["adr"] * x["stays_in_week_nights"]).sum()).to_dict()
-    return trends
-
-def cancellation_rate():
-    return df["is_canceled"].mean() * 100
-
-def geo_distribution():
-    return df["country"].value_counts().to_dict() 
-
-def booking_lead_time():
-    return {
-        "average_lead_time": df["lead_time"].mean(),
-        "minimum_lead_time": df["lead_time"].min(),
-        "maximum_lead_time": df["lead_time"].max(),
-    }
