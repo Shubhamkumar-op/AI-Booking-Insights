@@ -5,11 +5,13 @@ class QueryRequest(BaseModel):
     query: str
 
 class BookingAnalyticsResponse(BaseModel):
-    revenue_trends: Dict[str, float]
+    revenue_trends: dict
     cancellation_rate: float
-    geo_distribution: Dict[str, int]
-    booking_lead_time: Dict[str, Any]
-
+    geo_distribution: dict
+    booking_lead_time: dict
+    most_popular_hotel: str
+    average_adr_per_hotel: dict
+    
 class QAResponse(BaseModel):
     faiss_response: Dict[str, Any]
     llm_response: str
