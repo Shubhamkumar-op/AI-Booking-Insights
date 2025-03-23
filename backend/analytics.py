@@ -2,11 +2,15 @@ import sqlite3
 
 DB_PATH = "hotel_bookings.db"
 
+
 def get_sql_data(query):
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute(query)
-        return cursor.fetchall()
+        result = cursor.fetchall()
+        print(f"🔥 SQL Query: {query}") 
+        print(f"🔍 SQL Result: {result}")  
+        return result
 
 def revenue_trends():
     result = get_sql_data("SELECT strftime('%Y-%m', arrival_date), SUM(adr * stays_in_week_nights) FROM bookings GROUP BY 1")
