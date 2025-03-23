@@ -98,18 +98,3 @@ def average_adr_per_hotel():
     query = "SELECT hotel, AVG(adr) FROM bookings GROUP BY hotel"
     result = get_sql_data(query)
     return {row[0]: row[1] for row in result} if result else {}
-
-# Data visualization
-def plot_revenue_trends():
-    data = revenue_trends()
-    if data:
-        df = pd.DataFrame(list(data.items()), columns=["Month", "Revenue"])
-        plt.figure(figsize=(10, 5))
-        sns.lineplot(x="Month", y="Revenue", data=df, marker="o")
-        plt.xticks(rotation=45)
-        plt.title("Revenue Trends Over Time")
-        plt.xlabel("Month")
-        plt.ylabel("Revenue")
-        plt.show()
-    else:
-        print("No revenue data available.")
