@@ -6,7 +6,7 @@ from models import QueryRequest, BookingAnalyticsResponse, QAResponse
 
 router = APIRouter()
 
-@router.post("/analytics", response_model=BookingAnalyticsResponse)
+@router.get("/analytics", response_model=BookingAnalyticsResponse)
 def get_analytics():
     return {
         "revenue_trends": revenue_trends(),
