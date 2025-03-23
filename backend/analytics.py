@@ -43,7 +43,63 @@
 
 import pandas as pd
 import os
+import pandas as pd
+import os
+import logging
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CSV_PATH = os.path.join(BASE_DIR, "data", "hotel_bookings.csv")
+
+def load_data():
+    try:
+        return pd.read_csv(CSV_PATH)
+    except pd.errors.EmptyDataError:
+        logging.error("The CSV file is empty.")
+        return pd.DataFrame()
+    except pd.errors.ParserError as e:
+        logging.error(f"Failed to parse the CSV file. Error: {e}")
+        return pd.DataFrame()
+
+def revenue_trends(df):
+    df["arrival_date"] = pd.to_datetime(df["arrival_date_year"].astype(str) + "-" + df["arrival_date_month"])
+    trends = df.groupby(df["arrival_date"].dt.to_period("M")).apply(lambda x: (x["adr"] * x["stays_in_week_nights"]).sum()).to_dict()
+    logging.info("Retrieved revenue trends data")
+    return trends
+
+def cancellation_rate(df):
+    rate = df["is_canceled"].mean() * 100
+    logging.info("Retrieved cancellation rate data")
+    return rate
+
+def geo_distribution(df):
+    distribution = df["country"].value_counts().to_dict()
+    logging.info("Retrieved geo distribution data")
+    return distribution
+
+def booking_lead_time(df):
+    lead_time_data = {
+        "average_lead_time": df["lead_time"].mean(),
+        "minimum_lead_time": df["lead_time"].min(),
+        "maximum_lead_time": df["lead_time"].max(),
+    }
+    logging.info("Retrieved booking lead time data")
+    return lead_time_data
+
+def main():
+    df = load_data()
+    if not df.empty:
+        revenue_trends_data = revenue_trends(df)
+        cancellation_rate_data = cancellation_rate(df)
+        geo_distribution_data = geo_distribution(df)
+        booking_lead_time_data = booking_lead_time(df)
+        # Use the retrieved data as needed
+        print(revenue_trends_data)
+        print(cancellation_rate_data)
+        print(geo_distribution_data)
+        print(booking_lead_time_data)
+
+if __name__ == "__main__":
+    main()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CSV_PATH = os.path.join(BASE_DIR, "data", "hotel_bookings.csv")
 df = pd.read_csv(CSV_PATH)

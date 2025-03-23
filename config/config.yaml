@@ -1,8 +1,8 @@
 database:
   path: "hotel_bookings.db"  
 api:
-  backend_url: "https://your-fastapi-app.onrender.com"  
-  streamlit_url: "https://your-streamlit-app.streamlit.app"  
+  backend_url: "https://ai-booking-insights.onrender.com"  
+  streamlit_url: "https://ai-booking-insights.streamlit.app/"  
 
 faiss:
   model_name: "all-MiniLM-L6-v2"  
@@ -10,7 +10,7 @@ faiss:
 
 llm:
   provider: "groq"  
-  model: "mixtral-8x7b-32768"  
+  model: "gemma2-9b-it"  
 
 logging:
   level: "INFO"  
