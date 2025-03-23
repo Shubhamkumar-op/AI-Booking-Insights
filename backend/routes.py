@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from analytics import revenue_trends, cancellation_rate, geo_distribution, booking_lead_time
 from faiss_index import query_faiss
 from llm import query_llm
+from fastapi import HTTPException
 from models import QueryRequest, BookingAnalyticsResponse, QAResponse
 
 router = APIRouter()
