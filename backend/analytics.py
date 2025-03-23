@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import logging
 
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "hotel_bookings.db")
 
