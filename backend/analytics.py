@@ -47,7 +47,6 @@ import os
 
 CSV_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "hotel_bookings.csv")
 df = pd.read_csv(CSV_PATH)
-filepath=data_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "bookings_data.csv")
 
 def revenue_trends():
     df["arrival_date"] = pd.to_datetime(df["arrival_date_year"].astype(str) + "-" + df["arrival_date_month"])
