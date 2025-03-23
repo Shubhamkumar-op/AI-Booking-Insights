@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-filrpath=data_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "bookings_data.csv")
+filepath=data_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "bookings_data.csv")
 
 def load_data(filepath):
     try:
