@@ -6,14 +6,17 @@ from models import QueryRequest, BookingAnalyticsResponse, QAResponse
 
 router = APIRouter()
 
-@router.get("/analytics", response_model=BookingAnalyticsResponse)
+@router.post("/analytics", response_model=BookingAnalyticsResponse)
 def get_analytics():
-    return {
-        "revenue_trends": revenue_trends(),
-        "cancellation_rate": cancellation_rate(),
-        "geo_distribution": geo_distribution(),
-        "booking_lead_time": booking_lead_time()
-    }
+    try:
+        return BookingAnalyticsResponse(
+            revenue_trends=revenue_trends(),
+            cancellation_rate=cancellation_rate(),
+            geo_distribution=geo_distribution(),
+            booking_lead_time=booking_lead_time()
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 @router.post("/ask", response_model=QAResponse)
 def ask_question(request: QueryRequest):
