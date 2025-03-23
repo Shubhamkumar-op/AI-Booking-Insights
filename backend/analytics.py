@@ -44,8 +44,8 @@
 import pandas as pd
 import os
 
-
-CSV_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "hotel_bookings.csv")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CSV_PATH = os.path.join(BASE_DIR, "data", "hotel_bookings.csv")
 df = pd.read_csv(CSV_PATH)
 
 def revenue_trends():
